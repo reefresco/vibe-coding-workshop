@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StrumTab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="logo">
+        <span class="logo-mark">♪</span>
+        <span class="logo-name">StrumTab</span>
+      </div>
+      <p class="sidebar-label">Songs</p>
+      <ul id="song-list"></ul>
+    </aside>
+    <main id="content">
+      <div id="song-view">
+        <div class="empty-state">
+          <div class="empty-icon">♪</div>
+          <h2>Welcome to StrumTab</h2>
+          <p>Select a song from the sidebar to view chords, strumming patterns, and tabs.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="songs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
