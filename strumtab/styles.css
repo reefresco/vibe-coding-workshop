@@ -1,4 +1,10 @@
-/* === Reset & base === */
+/* ═══════════════════════════════════════════════════════
+   StrumTab — stylesheet
+   Sections: Reset · Tokens · Layout · Sidebar · Content
+             Legend · View mode · Editor · Scrollbar
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Reset & base ────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -15,6 +21,8 @@
   --tab-text:      #66ddaa;
   --change-bg:     #1e1e00;
   --change-border: #8a7320;
+  --danger:        #cc5555;
+  --danger-bg:     #2a1010;
 }
 
 body {
@@ -25,15 +33,18 @@ body {
   overflow: hidden;
 }
 
-/* === Layout === */
+button { font-family: inherit; }
+input, textarea { font-family: inherit; }
+
+/* ─── Layout ──────────────────────────────────────────── */
 #app {
   display: flex;
   height: 100vh;
 }
 
-/* === Sidebar === */
+/* ─── Sidebar ─────────────────────────────────────────── */
 #sidebar {
-  width: 230px;
+  width: 240px;
   flex-shrink: 0;
   background: var(--surface);
   border-right: 1px solid var(--border);
@@ -46,22 +57,38 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 20px 16px 16px;
+  padding: 18px 16px 14px;
   border-bottom: 1px solid var(--border);
 }
 
 .logo-mark {
-  font-size: 28px;
+  font-size: 26px;
   color: var(--gold);
   line-height: 1;
 }
 
 .logo-name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--gold);
   letter-spacing: 0.5px;
 }
+
+.new-song-btn {
+  display: block;
+  width: calc(100% - 16px);
+  margin: 10px 8px 4px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+  transition: all 0.15s;
+}
+.new-song-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
 
 .sidebar-label {
   font-size: 11px;
@@ -69,7 +96,19 @@ body {
   text-transform: uppercase;
   letter-spacing: 1.4px;
   color: var(--text-muted);
-  padding: 16px 16px 8px;
+  padding: 12px 16px 6px;
+}
+
+.sidebar-group-label {
+  list-style: none;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--text-muted);
+  padding: 12px 16px 6px;
+  margin-top: 6px;
+  border-top: 1px solid var(--border);
 }
 
 #song-list {
@@ -78,57 +117,102 @@ body {
 }
 
 .song-item {
-  padding: 10px 12px;
+  padding: 9px 11px;
   border-radius: 8px;
   cursor: pointer;
   border: 1px solid transparent;
   margin-bottom: 3px;
   transition: background 0.1s, border-color 0.1s;
 }
+.song-item:hover            { background: var(--surface-hi); }
+.song-item.active           { background: var(--surface-hi); border-color: var(--gold-dim); }
 
-.song-item:hover {
-  background: var(--surface-hi);
+.song-item-title  { font-size: 14px; font-weight: 600; color: var(--text); }
+.song-item-artist { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+.song-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  gap: 6px;
 }
 
-.song-item.active {
-  background: var(--surface-hi);
-  border-color: var(--gold-dim);
+/* Forked/user versions nested under source song */
+.version-item {
+  margin-left: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--gold-dim);
 }
-
-.song-item-title {
-  font-size: 14px;
-  font-weight: 600;
+.version-label {
+  font-size: 13px;
   color: var(--text);
+  font-weight: 500;
 }
 
-.song-item-artist {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
+/* Difficulty badges */
 .difficulty-badge {
   display: inline-block;
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  padding: 1px 6px;
+  padding: 2px 6px;
   border-radius: 4px;
-  margin-top: 5px;
 }
-.difficulty-badge.beginner    { background: #1a3a1a; color: #5a9a5a; }
+.difficulty-badge.beginner     { background: #1a3a1a; color: #5a9a5a; }
 .difficulty-badge.intermediate { background: #2a2a10; color: #aaa040; }
-.difficulty-badge.advanced    { background: #3a1a1a; color: #aa5050; }
+.difficulty-badge.advanced     { background: #3a1a1a; color: #aa5050; }
 
-/* === Main content === */
+/* Sidebar action buttons */
+.fork-btn {
+  padding: 3px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.fork-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+.edit-ver-btn {
+  padding: 3px 8px;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-dim);
+  color: #1a1800;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.edit-ver-btn:hover { background: var(--gold); border-color: var(--gold); }
+
+.delete-ver-btn {
+  padding: 3px 7px;
+  background: transparent;
+  border: 1px solid #3a1a1a;
+  color: var(--danger);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+.delete-ver-btn:hover { background: var(--danger-bg); border-color: var(--danger); }
+
+/* ─── Main content ─────────────────────────────────────── */
 #content {
   flex: 1;
   overflow-y: auto;
   padding: 36px 40px 60px;
 }
 
-/* === Empty state === */
+/* ─── Empty state ─────────────────────────────────────── */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -138,51 +222,26 @@ body {
   text-align: center;
   color: var(--text-muted);
 }
+.empty-icon     { font-size: 64px; color: var(--gold-dim); margin-bottom: 16px; }
+.empty-state h2 { font-size: 28px; color: var(--gold); margin-bottom: 10px; }
+.empty-state p  { font-size: 15px; max-width: 340px; line-height: 1.6; }
 
-.empty-icon {
-  font-size: 64px;
-  color: var(--gold-dim);
-  margin-bottom: 16px;
-}
-
-.empty-state h2 {
-  font-size: 28px;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-.empty-state p {
-  font-size: 15px;
-  max-width: 340px;
-  line-height: 1.6;
-}
-
-/* === Song header === */
+/* ─── View-mode song header ────────────────────────────── */
 .song-header {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
 }
-
-.song-title {
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.1;
-}
-
-.song-artist {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin-top: 5px;
-}
-
-.song-meta {
+.song-header-row {
   display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
+.song-title  { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.song-artist { font-size: 17px; color: var(--text-muted); margin-top: 4px; }
+.song-meta   { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+.header-actions { flex-shrink: 0; padding-top: 4px; }
 
 .meta-badge {
   font-size: 12px;
@@ -193,8 +252,42 @@ body {
   border: 1px solid var(--border);
   color: var(--gold);
 }
+.meta-badge.muted { color: var(--text-muted); }
 
-/* === Legend === */
+/* Shared action buttons */
+.action-btn {
+  padding: 8px 16px;
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.action-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+.primary-btn {
+  background: var(--gold-dim);
+  border-color: var(--gold-dim);
+  color: #1a1800;
+  font-weight: 600;
+}
+.primary-btn:hover { background: var(--gold); border-color: var(--gold); }
+
+.danger-btn {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #3a1a1a;
+  color: var(--danger);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.danger-btn:hover { background: var(--danger-bg); border-color: var(--danger); }
+.danger-btn.sm { padding: 3px 8px; font-size: 11px; }
+
+/* ─── Legend ─────────────────────────────────────────────── */
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -205,30 +298,11 @@ body {
   border: 1px solid var(--border);
   border-radius: 10px;
 }
+.legend-item        { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-muted); }
+.legend-arrow       { font-size: 18px; font-weight: bold; }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.legend-arrow {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.legend-swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-}
-
-/* === Song sections === */
-.song-section {
-  margin-bottom: 40px;
-}
+/* ─── View-mode sections ──────────────────────────────── */
+.song-section      { margin-bottom: 36px; }
 
 .section-name {
   font-size: 12px;
@@ -240,25 +314,12 @@ body {
   margin-bottom: 16px;
   border-bottom: 1px solid var(--border);
 }
+.tab-section-name { color: var(--tab-text); }
 
-.section-name.tab-section-name {
-  color: var(--tab-text);
-}
+/* Chord line (view) */
+.chord-line      { margin-bottom: 22px; }
+.strum-row       { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 3px; margin-bottom: 8px; }
 
-/* === Chord lines === */
-.chord-line {
-  margin-bottom: 22px;
-}
-
-.strum-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 3px;
-  margin-bottom: 8px;
-}
-
-/* vertical bar separator between chord groups */
 .chord-sep {
   width: 1px;
   height: 38px;
@@ -267,25 +328,20 @@ body {
   flex-shrink: 0;
 }
 
-/* individual strum token */
 .strum-token {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 36px;
-  padding: 4px 5px 4px;
+  padding: 4px 5px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
-  transition: background 0.1s;
 }
-
-/* first strum of a new chord gets highlighted */
 .strum-token.chord-start {
   background: var(--change-bg);
   border-color: var(--change-border);
 }
-
 .strum-chord-name {
   font-size: 10px;
   font-weight: 700;
@@ -293,17 +349,9 @@ body {
   margin-bottom: 3px;
   color: var(--text-muted);
 }
+.strum-token.chord-start .strum-chord-name { color: var(--gold); }
 
-.strum-token.chord-start .strum-chord-name {
-  color: var(--gold);
-}
-
-.strum-arrow {
-  font-size: 17px;
-  font-weight: bold;
-  line-height: 1;
-}
-
+.strum-arrow      { font-size: 17px; font-weight: bold; line-height: 1; }
 .strum-arrow.down { color: var(--down); }
 .strum-arrow.up   { color: var(--up);   }
 
@@ -315,23 +363,20 @@ body {
   padding-left: 2px;
 }
 
-/* === Tab sections === */
+/* Tab block (view) */
 .tab-block {
   background: #0a0a16;
   border: 1px solid var(--border);
   border-left: 3px solid var(--tab-text);
   border-radius: 0 10px 10px 0;
   padding: 18px 22px;
-  margin-bottom: 12px;
 }
-
 .tab-note {
   font-size: 12px;
   font-style: italic;
   color: var(--text-muted);
   margin-bottom: 12px;
 }
-
 .tab-strings {
   font-family: 'Courier New', 'Lucida Console', monospace;
   font-size: 14px;
@@ -341,8 +386,420 @@ body {
   overflow-x: auto;
 }
 
-/* === Scrollbar styling === */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+/* ═══════════════════════════════════════════════════════
+   EDITOR STYLES
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Editor toolbar ─────────────────────────────────── */
+.edit-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 0 18px;
+  margin-bottom: 22px;
+  border-bottom: 2px solid var(--gold-dim);
+}
+.edit-toolbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.edit-mode-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  white-space: nowrap;
+  padding: 3px 8px;
+  background: var(--gold-dim);
+  border-radius: 4px;
+  color: #1a1800;
+}
+.version-name-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--gold);
+  font-size: 17px;
+  font-weight: 600;
+  padding: 3px 0;
+  min-width: 0;
+}
+.version-name-input:focus { outline: none; border-bottom-color: var(--gold); }
+.autosave-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ─── Song metadata editor ─────────────────────────────── */
+.edit-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.meta-field span {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.meta-field input {
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 160px;
+}
+.meta-field input:focus { outline: none; border-color: var(--gold-dim); }
+
+/* ─── Section editor ──────────────────────────────────── */
+.edit-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.edit-section-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.section-type-pill {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  flex-shrink: 0;
+}
+.chord-pill { background: #1a1a38; color: #6688cc; border: 1px solid #2a2a55; }
+.tab-pill   { background: #0a1a14; color: var(--tab-text); border: 1px solid #1a3328; }
+
+.section-name-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 3px 0;
+  min-width: 120px;
+}
+.section-name-input:focus { outline: none; border-bottom-color: var(--gold-dim); }
+
+.edit-section-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.ctrl-btn {
+  padding: 4px 8px;
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.ctrl-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+/* ─── Tab section editor ──────────────────────────────── */
+.edit-tab-block { padding: 14px 16px; }
+
+.tab-note-input {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-style: italic;
+  padding: 4px 0 6px;
+  margin-bottom: 12px;
+}
+.tab-note-input:focus { outline: none; border-bottom-color: var(--gold-dim); }
+
+.tab-textarea {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--tab-text);
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: 14px;
+  line-height: 2;
+  padding: 0;
+  resize: vertical;
+  min-height: 100px;
+}
+.tab-textarea:focus { outline: none; }
+
+/* ─── Chord line editor ───────────────────────────────── */
+.edit-chord-line {
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.edit-line-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.line-num {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+/* ─── Strum row editor ─────────────────────────────────── */
+.strum-row-editor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 10px;
+}
+
+/* "+" insert-strum buttons */
+.strum-insert-btn {
+  width: 20px;
+  height: 56px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+}
+.strum-insert-btn:hover {
+  background: var(--surface);
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+/* Individual strum token in edit mode */
+.strum-token-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 5px 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-width: 44px;
+  position: relative;
+  gap: 4px;
+}
+.strum-token-editor.chord-start {
+  background: var(--change-bg);
+  border-color: var(--change-border);
+}
+
+/* "×" remove-strum button (top-right corner of token) */
+.strum-remove-btn {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--danger-bg);
+  border: 1px solid #553333;
+  color: var(--danger);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.15s;
+}
+.strum-remove-btn:hover:not(:disabled) { background: var(--danger); color: #fff; border-color: var(--danger); }
+.strum-remove-btn:disabled             { opacity: 0.3; cursor: not-allowed; }
+
+/* Chord name input inside each token */
+.chord-name-input {
+  width: 40px;
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  padding: 3px 2px;
+  border-radius: 4px;
+}
+.chord-name-input:focus { outline: none; border-color: var(--gold-dim); background: var(--bg); }
+
+/* Strum direction toggle */
+.strum-dir-btn {
+  width: 30px;
+  height: 28px;
+  border-radius: 5px;
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: opacity 0.1s;
+}
+.strum-dir-btn.down { color: var(--down); border-color: #5a3010; }
+.strum-dir-btn.up   { color: var(--up);   border-color: #104050; }
+.strum-dir-btn:hover { opacity: 0.65; }
+
+/* Lyric textarea in chord line */
+.lyric-input {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 15px;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 6px 2px;
+  resize: none;
+}
+.lyric-input:focus { outline: none; border-bottom-color: var(--gold-dim); }
+
+/* "Add line" and "Add section" buttons */
+.add-line-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-top: 8px;
+  transition: all 0.15s;
+}
+.add-line-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+.add-section-bar {
+  display: flex;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border);
+  margin-top: 10px;
+}
+
+/* ─── Rhythm mode ───────────────────────────────────────── */
+.rhythm-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.bpm-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+.bpm-label strong {
+  color: var(--up);
+  font-variant-numeric: tabular-nums;
+}
+
+.bpm-slider {
+  flex: 1;
+  max-width: 260px;
+  height: 4px;
+  accent-color: var(--up);
+  cursor: pointer;
+}
+
+.rhythm-toggle-btn {
+  border-color: var(--border);
+  color: var(--up);
+  letter-spacing: 0.3px;
+}
+
+.rhythm-toggle-btn:hover {
+  border-color: var(--up);
+  color: var(--up);
+  background: rgba(64, 200, 232, 0.08);
+}
+
+.rhythm-toggle-btn.active {
+  background: rgba(64, 200, 232, 0.12);
+  border-color: var(--up);
+  color: var(--up);
+}
+
+.lyrics-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 2px;
+  height: 100%;
+  background: #ef4444;
+  z-index: 20;
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.playhead.visible {
+  opacity: 1;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
